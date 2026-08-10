@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TomatoFresh AI</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #fff7fa;
+            color: #3d2630;
+        }
+
+        /* HEADER */
+
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #f8dce6;
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 700;
+            color: #d94f78;
+        }
+
+        .status {
+            background: #fff0f5;
+            color: #c93e68;
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* MAIN */
+
+        .container {
+            width: 90%;
+            max-width: 1150px;
+            margin: auto;
+            padding: 40px 0;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .tomato-icon {
+            width: 85px;
+            height: 85px;
+            margin: auto;
+            background: #ffe3ec;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 48px;
+            box-shadow: 0 8px 25px rgba(220, 82, 120, 0.12);
+        }
+
+        .hero h1 {
+            margin-top: 18px;
+            font-size: 42px;
+            color: #bd3f66;
+        }
+
+        .hero p {
+            margin-top: 8px;
+            color: #8d6976;
+            font-size: 16px;
+        }
+
+        /* STAT CARDS */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border: 1px solid #f7dce5;
+            border-radius: 18px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-card .icon {
+            font-size: 25px;
+        }
+
+        .stat-card h3 {
+            margin-top: 8px;
+            color: #c7476d;
+            font-size: 24px;
+        }
+
+        .stat-card p {
+            margin-top: 4px;
+            color: #92727e;
+            font-size: 13px;
+        }
+
+        /* DASHBOARD */
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #f6dbe5;
+            border-radius: 22px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(193, 80, 111, 0.07);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .card-title h2 {
+            font-size: 20px;
+            color: #4a3039;
+        }
+
+        .card-title span {
+            font-size: 22px;
+        }
+
+        /* INPUTS */
+
+        .input-group {
+            margin-bottom: 17px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #654653;
+        }
+
+        input,
+        select {
+            width: 100%;
+            height: 45px;
+            border: 1px solid #edcbd7;
+            background: #fffafd;
+            border-radius: 11px;
+            padding: 0 13px;
+            color: #4b333c;
+            outline: none;
+            font-size: 14px;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #df6688;
+            box-shadow: 0 0 0 3px #fff0f5;
+        }
+
+        .predict-btn {
+            width: 100%;
+            height: 50px;
+            border: none;
+            border-radius: 12px;
+            margin-top: 5px;
+            background: #df5b82;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .predict-btn:hover {
+            background: #cd466e;
+            transform: translateY(-1px);
+        }
+
+        /* RESULT */
+
+        .result-box {
+            text-align: center;
+            background: #fff5f8;
+            border-radius: 18px;
+            padding: 25px;
+            border: 1px solid #f8dce6;
+        }
+
+        .result-icon {
+            font-size: 55px;
+        }
+
+        .result-title {
+            font-size: 30px;
+            font-weight: 750;
+            margin-top: 8px;
+        }
+
+        .confidence {
+            margin-top: 8px;
+            color: #81636d;
+        }
+
+        /* SCORE */
+
+        .score-section {
+            margin-top: 22px;
+        }
+
+        .score-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .progress {
+            width: 100%;
+            height: 10px;
+            background: #f3dfe6;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #df5b82;
+            border-radius: 20px;
+            transition: width 0.8s ease;
+        }
+
+        /* RECOMMENDATION */
+
+        .recommendation {
+            margin-top: 20px;
+            padding: 17px;
+            background: #fff0f5;
+            border-radius: 14px;
+            color: #67434f;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .recommendation strong {
+            color: #c7466c;
+        }
+
+        /* EMPTY */
+
+        .empty {
+            text-align: center;
+            padding: 55px 15px;
+            color: #967682;
+        }
+
+        .empty-icon {
+            font-size: 52px;
+            margin-bottom: 12px;
+        }
+
+        .empty h3 {
+            color: #62414d;
+            margin-bottom: 7px;
+        }
+
+        /* CONDITION ANALYSIS */
+
+        .conditions {
+            margin-top: 22px;
+        }
+
+        .condition-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f7e4ea;
+            font-size: 14px;
+        }
+
+        .condition-row:last-child {
+            border-bottom: none;
+        }
+
+        .good {
+            color: #339466;
+            font-weight: 700;
+        }
+
+        .warning {
+            color: #d48a2e;
+            font-weight: 700;
+        }
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #a27c88;
+            font-size: 12px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 800px) {
+
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .container {
+                width: 92%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="brand">TomatoFresh AI</div>
+    <div class="status">● ML MODEL ONLINE</div>
+</header>
+
+
+<div class="container">
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="tomato-icon">
+            🍅
+        </div>
+
+        <h1>Tomato Freshness Classifier</h1>
+
+        <p>
+            Intelligent freshness estimation using Machine Learning
+        </p>
+
+    </section>
+
+
+    <!-- STATISTICS -->
+
+    <section class="stats">
+
+        <div class="stat-card">
+            <div class="icon">🍅</div>
+            <h3>Tomato</h3>
+            <p>Food Category</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="icon">🤖</div>
+            <h3>Random Forest</h3>
+            <p>ML Algorithm</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="icon">⚡</div>
+            <h3>Real-Time</h3>
+            <p>Prediction</p>
+        </div>
+
+    </section>
+
+
+    <!-- MAIN DASHBOARD -->
+
+    <section class="dashboard">
+
+        <!-- INPUT CARD -->
+
+        <div class="card">
+
+            <div class="card-title">
+                <span>🔬</span>
+                <h2>Tomato Conditions</h2>
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Temperature (°C)</label>
+
+                <input
+                    type="number"
+                    id="temp"
+                    value="6"
+                    step="0.1"
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Storage Duration (Days)</label>
+
+                <input
+                    type="number"
+                    id="storage_days"
+                    value="2"
+                    min="0"
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Humidity (%)</label>
+
+                <input
+                    type="number"
+                    id="humidity"
+                    value="65"
+                    min="0"
+                    max="100"
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Odor Level</label>
+
+                <select id="odor">
+
+                    <option value="0">
+                        Normal
+                    </option>
+
+                    <option value="1">
+                        Slight Change
+                    </option>
+
+                    <option value="2">
+                        Strong / Unpleasant
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Color Change</label>
+
+                <select id="color_change">
+
+                    <option value="0">
+                        No Change
+                    </option>
+
+                    <option value="1">
+                        Slight Change
+                    </option>
+
+                    <option value="2">
+                        Major Change
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Texture Change</label>
+
+                <select id="texture_change">
+
+                    <option value="0">
+                        Normal
+                    </option>
+
+                    <option value="1">
+                        Slightly Soft
+                    </option>
+
+                    <option value="2">
+                        Very Soft
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                class="predict-btn"
+                onclick="predictFreshness()"
+            >
+                Analyze Tomato
+            </button>
+
+        </div>
+
+
+        <!-- RESULT CARD -->
+
+        <div class="card">
+
+            <div class="card-title">
+                <span>📊</span>
+                <h2>AI Analysis</h2>
+            </div>
+
+
+            <div id="result">
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+                        🍅
+                    </div>
+
+                    <h3>Ready to Analyze</h3>
+
+                    <p>
+                        Enter the tomato conditions and
+                        click Analyze Tomato.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <footer>
+        TomatoFresh AI • Machine Learning Demonstration • 2026
+    </footer>
+
+</div>
+
+
+<script>
+
+async function predictFreshness() {
+
+    const result = document.getElementById("result");
+
+    result.innerHTML = `
+        <div class="empty">
+
+            <div class="empty-icon">
+                ⏳
+            </div>
+
+            <h3>Analyzing Tomato...</h3>
+
+            <p>
+                Machine learning model is processing the conditions.
+            </p>
+
+        </div>
+    `;
+
+
+    const data = {
+
+        temp:
+            document.getElementById("temp").value,
+
+        storage_days:
+            document.getElementById("storage_days").value,
+
+        humidity:
+            document.getElementById("humidity").value,
+
+        odor:
+            document.getElementById("odor").value,
+
+        color_change:
+            document.getElementById("color_change").value,
+
+        texture_change:
+            document.getElementById("texture_change").value
+
+    };
+
+
+    try {
+
+        const response = await fetch(
+            "/predict",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(data)
+            }
+        );
+
+
+        const resultData =
+            await response.json();
+
+
+        if (resultData.error) {
+            throw new Error(resultData.error);
+        }
+
+
+        let icon = "🍅";
+        let color = "#339466";
+
+
+        if (
+            resultData.freshness === "Moderate"
+        ) {
+
+            icon = "🟡";
+            color = "#d48a2e";
+
+        }
+
+
+        if (
+            resultData.freshness === "Not Fresh"
+        ) {
+
+            icon = "🔴";
+            color = "#d64c61";
+
+        }
+
+
+        const score =
+            resultData.confidence;
+
+
+        result.innerHTML = `
+
+            <div class="result-box">
+
+                <div class="result-icon">
+                    ${icon}
+                </div>
+
+                <div
+                    class="result-title"
+                    style="color:${color};"
+                >
+                    ${resultData.freshness.toUpperCase()}
+                </div>
+
+                <div class="confidence">
+                    Model Confidence:
+                    <strong>
+                        ${resultData.confidence}%
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="score-section">
+
+                <div class="score-header">
+
+                    <span>
+                        Prediction Confidence
+                    </span>
+
+                    <span>
+                        ${score}%
+                    </span>
+
+                </div>
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar"
+                        style="width:${score}%"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="conditions">
+
+                <div class="condition-row">
+
+                    <span>
+                        🌡 Temperature
+                    </span>
+
+                    <span class="good">
+                        Analyzed ✓
+                    </span>
+
+                </div>
+
+
+                <div class="condition-row">
+
+                    <span>
+                        💧 Humidity
+                    </span>
+
+                    <span class="good">
+                        Analyzed ✓
+                    </span>
+
+                </div>
+
+
+                <div class="condition-row">
+
+                    <span>
+                        📅 Storage Duration
+                    </span>
+
+                    <span class="good">
+                        Analyzed ✓
+                    </span>
+
+                </div>
+
+
+                <div class="condition-row">
+
+                    <span>
+                        👃 Odor
+                    </span>
+
+                    <span class="good">
+                        Analyzed ✓
+                    </span>
+
+                </div>
+
+
+                <div class="condition-row">
+
+                    <span>
+                        🎨 Color
+                    </span>
+
+                    <span class="good">
+                        Analyzed ✓
+                    </span>
+
+                </div>
+
+
+                <div class="condition-row">
+
+                    <span>
+                        ✋ Texture
+                    </span>
+
+                    <span class="good">
+                        Analyzed ✓
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="recommendation">
+
+                <strong>
+                    💡 Recommendation
+                </strong>
+
+                <p style="margin-top:7px;">
+                    ${resultData.recommendation}
+                </p>
+
+            </div>
+
+        `;
+
+
+    } catch (error) {
+
+        result.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    ⚠️
+                </div>
+
+                <h3>
+                    Prediction Error
+                </h3>
+
+                <p>
+                    ${error.message}
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
